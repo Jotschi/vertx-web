@@ -24,8 +24,8 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Route;
 import io.vertx.ext.web.RoutingContext;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.net.URISyntaxException;
+import java.net.URI;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -254,14 +254,17 @@ public class RouteImpl implements Route {
             try {
               for (int i = 0; i < groups.size(); i++) {
                 final String k = groups.get(i);
-                final String value = URLDecoder.decode(m.group("p" + i), "UTF-8");
+                String value = m.group("p" + i);
+                if (useNormalisedPath) {
+                  value = new URI(value).getPath();
+                }
                 if (!request.params().contains(k)) {
                   params.put(k, value);
                 } else {
                   context.pathParams().put(k, value);
                 }
               }
-            } catch (UnsupportedEncodingException e) {
+            } catch (URISyntaxException e) {
               context.fail(e);
               return false;
             }
@@ -273,7 +276,10 @@ public class RouteImpl implements Route {
                 String group = m.group(i + 1);
                 if(group != null) {
                   final String k = "param" + i;
-                  final String value = URLDecoder.decode(group, "UTF-8");
+                  String value = group;
+                  if (useNormalisedPath) {
+                    value = new URI(value).getPath();
+                  }
                   if (!request.params().contains(k)) {
                     params.put(k, value);
                   } else {
@@ -281,7 +287,7 @@ public class RouteImpl implements Route {
                   }
                 }
               }
-            } catch (UnsupportedEncodingException e) {
+            } catch (URISyntaxException e) {
               context.fail(e);
               return false;
             }

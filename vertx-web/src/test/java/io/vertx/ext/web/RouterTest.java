@@ -1357,6 +1357,16 @@ public class RouterTest extends WebTestBase {
   }
 
   @Test
+  public void testGetWithPlusPath2() throws Exception {
+    router.get("/:param1").useNormalisedPath(false).handler(rc -> {
+      assertEquals("/some+path blar",rc.normalisedPath());
+      assertEquals("some+path%20blar",rc.pathParam("param1"));
+      rc.response().setStatusMessage("foo").end();
+    });
+    testRequest(HttpMethod.GET, "/some+path%20blar", 200, "foo");
+  }
+
+  @Test
   public void testGetWithPathBegin() throws Exception {
     router.get("/somepath/*").handler(rc -> {
       rc.response().setStatusMessage("foo").end();
