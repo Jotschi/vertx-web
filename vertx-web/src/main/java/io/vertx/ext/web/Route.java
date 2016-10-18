@@ -16,6 +16,8 @@
 
 package io.vertx.ext.web;
 
+import java.util.Set;
+
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.Nullable;
 import io.vertx.codegen.annotations.VertxGen;
@@ -30,6 +32,13 @@ import io.vertx.core.http.HttpMethod;
  */
 @VertxGen
 public interface Route {
+
+  /**
+   * Return the added HTTP methods for this route.
+   *
+   * @return
+   */
+  Set<HttpMethod> methods();
 
   /**
    * Add an HTTP method for this route. By default a route will match all HTTP methods. If any are specified then the route
@@ -50,6 +59,13 @@ public interface Route {
    */
   @Fluent
   Route path(String path);
+
+  /**
+   * Return the set path regex if it has been set.
+   *
+   * @return Set path regex or null if no path regex was set for the route
+   */
+  String pathRegex();
 
   /**
    * Set the path prefix as a regular expression. If set then this route will only match request URI paths, the beginning
@@ -87,6 +103,12 @@ public interface Route {
    */
   @Fluent
   Route order(int order);
+
+  /**
+   * Return the order for this route.
+   * @return the order
+   */
+  int order();
 
   /**
    * Specify this is the last route for the router.
@@ -182,6 +204,10 @@ public interface Route {
   @Nullable
   String getPath();
 
+  /**
+   * Return the router for the route.
+   * @return
+   */
+  Router router();
+
 }
-
-

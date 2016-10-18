@@ -16,15 +16,16 @@
 
 package io.vertx.ext.web.impl;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Route;
+import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * @author <a href="http://tfox.org">Tim Fox</a>
@@ -95,7 +96,7 @@ public abstract class RoutingContextImplBase implements RoutingContext {
   }
 
 
-  protected void unhandledFailure(int statusCode, Throwable failure, RouterImpl router) {
+  protected void unhandledFailure(int statusCode, Throwable failure, Router router) {
     int code = statusCode != -1 ? statusCode : 500;
     if (failure != null) {
       if (router.exceptionHandler() != null) {

@@ -351,6 +351,12 @@ public interface Router {
   Router mountSubRouter(String mountPoint, Router subRouter);
 
   /**
+   * Return the exception handler of the router.
+   * @return
+   */
+  Handler<Throwable> exceptionHandler();
+
+  /**
    * Specify a handler for any unhandled exceptions on this router. The handler will be called for exceptions thrown
    * from handlers. This does not affect the normal failure routing logic.
    *
@@ -373,5 +379,6 @@ public interface Router {
    * @param context  the routing context
    */
   void handleFailure(RoutingContext context);
+
 
 }

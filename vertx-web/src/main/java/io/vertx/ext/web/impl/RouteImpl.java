@@ -16,6 +16,16 @@
 
 package io.vertx.ext.web.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import io.netty.handler.codec.http.QueryStringDecoder;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpMethod;
@@ -23,11 +33,8 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Route;
+import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -85,6 +92,11 @@ public class RouteImpl implements Route {
     setRegex(regex);
   }
 
+  @Override 
+  public Set<HttpMethod> methods() {
+    return methods;
+  }
+
   @Override
   public synchronized Route method(HttpMethod method) {
     methods.add(method);
@@ -104,6 +116,11 @@ public class RouteImpl implements Route {
     return this;
   }
 
+  @Override
+  public String pathRegex() {
+	 return pattern.pattern();
+  }
+  
   @Override
   public synchronized Route produces(String contentType) {
     produces.add(contentType);
@@ -319,7 +336,8 @@ public class RouteImpl implements Route {
     return true;
   }
 
-  RouterImpl router() {
+  @Override
+  public Router router() {
     return router;
   }
 
@@ -459,7 +477,8 @@ public class RouteImpl implements Route {
 
   private boolean exactPath;
 
-  int order() {
+  @Override
+  public int order() {
     return order;
   }
 

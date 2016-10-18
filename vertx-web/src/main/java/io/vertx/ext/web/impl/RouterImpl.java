@@ -38,7 +38,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class RouterImpl implements Router {
 
-  private static final Comparator<RouteImpl> routeComparator = (RouteImpl o1, RouteImpl o2) -> {
+  public static final Comparator<Route> routeComparator = (Route o1, Route o2) -> {
     // we keep a set of handlers ordered by its "order" property
     final int compare = Integer.compare(o1.order(), o2.order());
     // since we are defining the comparator to order the set we must be careful because the set
@@ -294,7 +294,8 @@ public class RouterImpl implements Router {
     return routes.iterator();
   }
 
-  Handler<Throwable> exceptionHandler() {
+  @Override
+  public Handler<Throwable> exceptionHandler() {
     return exceptionHandler;
   }
 
